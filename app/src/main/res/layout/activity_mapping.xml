@@ -1,0 +1,36 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#333333"
+    android:fitsSystemWindows="true"
+    tools:context="no.stonehill.preppers.mapping.MappingActivity">
+
+    <com.esri.arcgisruntime.mapping.view.MapView
+        android:id="@+id/mapping_activity_mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </com.esri.arcgisruntime.mapping.view.MapView>
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <Button
+        android:id="@+id/mapping_activity_zoom_in"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:text="+"
+        android:padding="0dp"
+        android:textSize="35sp"/>
+
+    <Button
+        android:id="@+id/mapping_activity_zoom_out"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:text="-"
+        android:padding="0dp"
+        android:textSize="35sp"
+        />
+</LinearLayout>
+
+</FrameLayout>
