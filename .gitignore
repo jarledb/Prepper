@@ -8,6 +8,7 @@
 
 # Java class files
 *.class
+app/src/main/java/no/stonehill/preppers/mapping/License.java
 
 # Generated files
 bin/

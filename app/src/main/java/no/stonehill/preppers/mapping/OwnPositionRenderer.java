@@ -9,6 +9,6 @@ public class OwnPositionRenderer {
     @Inject GraphicsHelper graphicsHelper;
 
     public OwnPositionRenderer() {
-        graphicsHelper.toString();
+
     }
 }

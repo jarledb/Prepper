@@ -1,18 +1,14 @@
 package no.stonehill.preppers.mapping.di;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
-import no.stonehill.preppers.mapping.OwnPositionRenderer;
 import no.stonehill.preppers.mapping.GraphicsHelper;
-
+import no.stonehill.preppers.mapping.OwnPositionRenderer;
 
 @Module
 public class MappingActivityModule {
 
     @Provides
-    @Singleton
     static OwnPositionRenderer provideOwnPositionRenderer() {
         return new OwnPositionRenderer();
     }

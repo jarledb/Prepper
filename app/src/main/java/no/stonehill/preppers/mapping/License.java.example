@@ -1,0 +1,8 @@
+package no.stonehill.preppers.mapping;
+
+public class License {
+    /**
+     * @See https://developers.arcgis.com/arcgis-runtime/licensing/
+     */
+    public static final String KEY = "runtimelite,1000,rudxxxxxxxxxx,none,xxxxxxxxxxxxxxxxxxxxxxx";
+}
