@@ -11,7 +11,6 @@ import dagger.android.DaggerApplication;
 import dagger.android.support.AndroidSupportInjectionModule;
 import no.stonehill.preppers.PrepperApplication;
 
-@Singleton
 @Component(modules = {
         AndroidSupportInjectionModule.class,
         AppModule.class,
