@@ -33,22 +33,21 @@ public class OwnPositionRenderer {
     }
 
     private void onLocationUpdate(Location location) {
-        createGraphic(location);
+        createOrUpdateGraphic(location);
     }
 
-    private synchronized void createGraphic(Location location) {
-
+    private synchronized void createOrUpdateGraphic(Location location) {
         Geometry geometry = graphicsHelper.convert(location);
         if (scooterGraphic == null) {
             scooterSymbol = graphicsHelper.createPictureSymbol(R.drawable.scooter_vector);
-            scooterSymbol.setAngle(0);
             scooterSymbol.setAngleAlignment(MarkerSymbol.AngleAlignment.MAP);
+
             scooterGraphic = new Graphic(geometry, scooterSymbol);
+
             overlay.getGraphics().add(scooterGraphic);
         } else {
             scooterGraphic.setGeometry(geometry);
-            Double bearing = GeoTools.bearing(lastLocation, location);
-            scooterSymbol.setAngle(bearing.floatValue());
+            scooterSymbol.setAngle(((Double) GeoTools.bearing(lastLocation, location)).floatValue());
         }
         lastLocation = location;
     }

@@ -32,5 +32,12 @@
         android:textSize="35sp"
         />
 </LinearLayout>
+    <ImageButton
+        android:id="@+id/mapping_activity_map_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/compass"
+        android:background="@null"
+        android:layout_gravity="right"/>
 
 </FrameLayout>

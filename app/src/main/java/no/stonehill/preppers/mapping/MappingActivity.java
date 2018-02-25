@@ -83,6 +83,11 @@ public class MappingActivity extends AppCompatActivity {
         mapView.setViewpointScaleAsync(mapScale);
     }
 
+    @OnClick(R.id.mapping_activity_map_mode)
+    void switchMapMode() {
+        mapController.setNextMapMode();
+    }
+
     private void startLocationProvider() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
