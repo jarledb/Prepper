@@ -6,8 +6,9 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import no.stonehill.preppers.location.LocationProvider;
+import no.stonehill.preppers.geo.LocationProvider;
 import no.stonehill.preppers.mapping.GraphicsHelper;
+import no.stonehill.preppers.mapping.MapController;
 import no.stonehill.preppers.mapping.OverlayManager;
 import no.stonehill.preppers.mapping.OwnPositionRenderer;
 
@@ -16,13 +17,13 @@ public class MappingActivityModule {
 
     @Provides
     @Singleton
-    static OwnPositionRenderer provideOwnPositionRenderer(GraphicsHelper graphicsHelper, OverlayManager overlayManager, LocationProvider locationProvider) {
+    OwnPositionRenderer provideOwnPositionRenderer(GraphicsHelper graphicsHelper, OverlayManager overlayManager, LocationProvider locationProvider) {
         return new OwnPositionRenderer(graphicsHelper, overlayManager, locationProvider);
     }
 
     @Provides
     @Singleton
-    static GraphicsHelper provideGraphicsHelper(Context context) {
+    GraphicsHelper provideGraphicsHelper(Context context) {
         return new GraphicsHelper(context);
     }
 
@@ -37,4 +38,11 @@ public class MappingActivityModule {
     LocationProvider provideLocationProvider(Context context) {
         return new LocationProvider(context);
     }
+
+    @Provides
+    @Singleton
+    MapController provideMapController(LocationProvider locationProvider, GraphicsHelper graphicsHelper) {
+        return new MapController(locationProvider, graphicsHelper);
+    }
+
 }

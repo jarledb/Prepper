@@ -1,4 +1,4 @@
-package no.stonehill.preppers.location;
+package no.stonehill.preppers.geo;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -6,7 +6,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.FileObserver;
 
 import no.stonehill.preppers.utils.ListenerManager;
 

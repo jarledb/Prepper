@@ -1,19 +1,21 @@
 package no.stonehill.preppers.mapping;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.support.annotation.DrawableRes;
 
+import com.esri.arcgisruntime.geometry.Point;
+import com.esri.arcgisruntime.geometry.SpatialReference;
 import com.esri.arcgisruntime.symbology.PictureMarkerSymbol;
 
 import java.util.concurrent.ExecutionException;
 
 public class GraphicsHelper {
-
+    public static final SpatialReference WGS_84 = SpatialReference.create(4326);
     private final Context context;
 
     public GraphicsHelper(Context context) {
@@ -24,13 +26,13 @@ public class GraphicsHelper {
         Drawable drawable = context.getResources().getDrawable(resource, context.getTheme());
         try {
             return PictureMarkerSymbol.createAsync(drawableToBitmap(drawable)).get();
-        } catch (InterruptedException | ExecutionException e ) {
+        } catch (InterruptedException | ExecutionException e) {
             //Ignore
         }
         return null;
     }
 
-    private  BitmapDrawable drawableToBitmap(Drawable drawable) {
+    private BitmapDrawable drawableToBitmap(Drawable drawable) {
         Bitmap bitmap;
         if (drawable instanceof BitmapDrawable) {
             return (BitmapDrawable) drawable;
@@ -46,5 +48,9 @@ public class GraphicsHelper {
         }
         drawable.draw(canvas);
         return new BitmapDrawable(context.getResources(), bitmap);
+    }
+
+    public Point convert(Location location) {
+        return new Point(location.getLongitude(), location.getLatitude(), WGS_84);
     }
 }

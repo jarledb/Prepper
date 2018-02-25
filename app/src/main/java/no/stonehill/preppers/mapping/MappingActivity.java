@@ -8,7 +8,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import com.esri.arcgisruntime.ArcGISRuntimeEnvironment;
-import com.esri.arcgisruntime.geometry.SpatialReference;
 import com.esri.arcgisruntime.mapping.ArcGISMap;
 import com.esri.arcgisruntime.mapping.Basemap;
 import com.esri.arcgisruntime.mapping.view.GraphicsOverlay;
@@ -21,14 +20,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dagger.android.AndroidInjection;
 import no.stonehill.preppers.R;
-import no.stonehill.preppers.location.LocationProvider;
+import no.stonehill.preppers.geo.LocationProvider;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
 public class MappingActivity extends AppCompatActivity {
-    public static final SpatialReference WGS_84 = SpatialReference.create(4326);
     public static final int REQ_CODE = 9876;
 
     private final GraphicsOverlay symbolsOverlay = new GraphicsOverlay();
@@ -39,6 +37,7 @@ public class MappingActivity extends AppCompatActivity {
     @Inject GraphicsHelper graphicsHelper;
     @Inject OverlayManager overlayManager;
     @Inject LocationProvider locationProvider;
+    @Inject MapController mapController;
 
     private ArcGISMap mMap;
 
@@ -63,6 +62,7 @@ public class MappingActivity extends AppCompatActivity {
         super.onStart();
         overlayManager.addOverlaysToMap(mapView);
         ownPositionRenderer.start();
+        mapController.start(mapView);
     }
 
     @Override

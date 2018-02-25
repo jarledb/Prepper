@@ -3,15 +3,14 @@ package no.stonehill.preppers.mapping;
 import android.location.Location;
 
 import com.esri.arcgisruntime.geometry.Geometry;
-import com.esri.arcgisruntime.geometry.Point;
 import com.esri.arcgisruntime.mapping.view.Graphic;
 import com.esri.arcgisruntime.mapping.view.GraphicsOverlay;
-import com.esri.arcgisruntime.symbology.Symbol;
+import com.esri.arcgisruntime.symbology.MarkerSymbol;
+import com.esri.arcgisruntime.symbology.PictureMarkerSymbol;
 
 import no.stonehill.preppers.R;
-import no.stonehill.preppers.location.LocationProvider;
-
-import static no.stonehill.preppers.mapping.MappingActivity.WGS_84;
+import no.stonehill.preppers.geo.GeoTools;
+import no.stonehill.preppers.geo.LocationProvider;
 
 public class OwnPositionRenderer {
 
@@ -20,6 +19,8 @@ public class OwnPositionRenderer {
     private final LocationProvider locationProvider;
 
     private Graphic scooterGraphic;
+    private Location lastLocation;
+    private PictureMarkerSymbol scooterSymbol;
 
     public OwnPositionRenderer(GraphicsHelper graphicsHelper, OverlayManager overlayManager, LocationProvider locationProvider) {
         this.graphicsHelper = graphicsHelper;
@@ -32,18 +33,23 @@ public class OwnPositionRenderer {
     }
 
     private void onLocationUpdate(Location location) {
-        Geometry geometry = new Point(location.getLongitude(), location.getLatitude(), WGS_84);
-        createGraphic(geometry);
+        createGraphic(location);
     }
 
-    private synchronized void createGraphic(Geometry geometry) {
-        if (scooterGraphic == null) {
-            Symbol scooter = graphicsHelper.createPictureSymbol(R.drawable.scooter_vector);
+    private synchronized void createGraphic(Location location) {
 
-            scooterGraphic = new Graphic(geometry, scooter);
+        Geometry geometry = graphicsHelper.convert(location);
+        if (scooterGraphic == null) {
+            scooterSymbol = graphicsHelper.createPictureSymbol(R.drawable.scooter_vector);
+            scooterSymbol.setAngle(0);
+            scooterSymbol.setAngleAlignment(MarkerSymbol.AngleAlignment.MAP);
+            scooterGraphic = new Graphic(geometry, scooterSymbol);
             overlay.getGraphics().add(scooterGraphic);
         } else {
             scooterGraphic.setGeometry(geometry);
+            Double bearing = GeoTools.bearing(lastLocation, location);
+            scooterSymbol.setAngle(bearing.floatValue());
         }
+        lastLocation = location;
     }
 }
