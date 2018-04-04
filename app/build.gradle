@@ -40,5 +40,6 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
     annotationProcessor "com.google.dagger:dagger-android-processor:$daggerVersion"
     compile "com.google.dagger:dagger-android-support:$daggerVersion"
+    compile group: 'org.simpleframework', name: 'simple-xml', version: '2.7.1'
 
 }

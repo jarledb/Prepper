@@ -8,14 +8,21 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.support.annotation.DrawableRes;
 
+import com.esri.arcgisruntime.geometry.Geometry;
 import com.esri.arcgisruntime.geometry.Point;
+import com.esri.arcgisruntime.geometry.PointCollection;
+import com.esri.arcgisruntime.geometry.Polyline;
 import com.esri.arcgisruntime.geometry.SpatialReference;
 import com.esri.arcgisruntime.symbology.PictureMarkerSymbol;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import no.stonehill.preppers.geo.gpx.GPX;
 
 public class GraphicsHelper {
     public static final SpatialReference WGS_84 = SpatialReference.create(4326);
+    public static final String GRAPHIC_ID = "GRAPHIC_ID";
     private final Context context;
 
     public GraphicsHelper(Context context) {
@@ -52,5 +59,16 @@ public class GraphicsHelper {
 
     public Point convert(Location location) {
         return new Point(location.getLongitude(), location.getLatitude(), WGS_84);
+    }
+
+    public Point convert(GPX.TrackPoint trackPoint) {
+        return new Point(
+                Double.parseDouble(trackPoint.getLongitude()),
+                Double.parseDouble(trackPoint.getLattitude()),
+                WGS_84);
+    }
+
+    public Geometry createLineGeometry(List<Point> points) {
+        return new Polyline(new PointCollection(points));
     }
 }

@@ -38,6 +38,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/compass"
         android:background="@null"
+        android:tint="@color/enabled"
         android:layout_gravity="right"/>
 
 </FrameLayout>

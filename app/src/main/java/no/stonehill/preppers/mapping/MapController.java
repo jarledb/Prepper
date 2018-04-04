@@ -23,7 +23,6 @@ public class MapController {
                     return FOLLOW_NORTH_UP;
             }
         }
-
     }
     private final LocationProvider locationProvider;
 
@@ -31,6 +30,7 @@ public class MapController {
     private MapView mapView;
     private MAP_MODE mapMode = MAP_MODE.FOLLOW_NORTH_UP;
     private Location lastLocation;
+
     public MapController(LocationProvider locationProvider, GraphicsHelper graphicsHelper) {
         this.locationProvider = locationProvider;
         this.graphicsHelper = graphicsHelper;
@@ -45,6 +45,10 @@ public class MapController {
         mapMode = MAP_MODE.next(mapMode);
     }
 
+    public MAP_MODE getMapMode() {
+        return mapMode;
+    }
+
     private void onLocationUpdate(Location location) {
         switch (mapMode) {
             case FOLLOW_NORTH_UP:
@@ -57,6 +61,7 @@ public class MapController {
                 mapView.setViewpointCenterAsync(graphicsHelper.convert(location));
                 break;
             case FREE_PAN:
+                mapView.setViewpointRotationAsync(0);
                 break;
         }
         lastLocation = location;

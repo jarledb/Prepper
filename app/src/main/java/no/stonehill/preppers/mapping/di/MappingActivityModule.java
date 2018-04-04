@@ -10,7 +10,8 @@ import no.stonehill.preppers.geo.LocationProvider;
 import no.stonehill.preppers.mapping.GraphicsHelper;
 import no.stonehill.preppers.mapping.MapController;
 import no.stonehill.preppers.mapping.OverlayManager;
-import no.stonehill.preppers.mapping.OwnPositionRenderer;
+import no.stonehill.preppers.mapping.renderers.GpxRenderer;
+import no.stonehill.preppers.mapping.renderers.OwnPositionRenderer;
 
 @Module
 public class MappingActivityModule {
@@ -43,6 +44,12 @@ public class MappingActivityModule {
     @Singleton
     MapController provideMapController(LocationProvider locationProvider, GraphicsHelper graphicsHelper) {
         return new MapController(locationProvider, graphicsHelper);
+    }
+
+    @Provides
+    @Singleton
+    GpxRenderer provideGpxRenderer(GraphicsHelper graphicsHelper, OverlayManager overlayManager, Context context) {
+        return new GpxRenderer(graphicsHelper, overlayManager, context);
     }
 
 }

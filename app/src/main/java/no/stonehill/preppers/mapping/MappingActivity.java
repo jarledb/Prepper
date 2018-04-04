@@ -2,25 +2,29 @@ package no.stonehill.preppers.mapping;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageButton;
 
 import com.esri.arcgisruntime.ArcGISRuntimeEnvironment;
 import com.esri.arcgisruntime.mapping.ArcGISMap;
 import com.esri.arcgisruntime.mapping.Basemap;
-import com.esri.arcgisruntime.mapping.view.GraphicsOverlay;
 import com.esri.arcgisruntime.mapping.view.MapView;
 
 import javax.inject.Inject;
 
+import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dagger.android.AndroidInjection;
 import no.stonehill.preppers.R;
 import no.stonehill.preppers.geo.LocationProvider;
+import no.stonehill.preppers.mapping.renderers.GpxRenderer;
+import no.stonehill.preppers.mapping.renderers.OwnPositionRenderer;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -28,16 +32,18 @@ import no.stonehill.preppers.geo.LocationProvider;
  */
 public class MappingActivity extends AppCompatActivity {
     public static final int REQ_CODE = 9876;
-
-    private final GraphicsOverlay symbolsOverlay = new GraphicsOverlay();
+    public static final int REQ_CODE_GPX = 4567;
 
     @BindView(R.id.mapping_activity_mapView) MapView mapView;
+    @BindColor(R.color.disabled) ColorStateList disabled;
+    @BindColor(R.color.enabled) ColorStateList enabled;
 
     @Inject OwnPositionRenderer ownPositionRenderer;
     @Inject GraphicsHelper graphicsHelper;
     @Inject OverlayManager overlayManager;
     @Inject LocationProvider locationProvider;
     @Inject MapController mapController;
+    @Inject GpxRenderer gpxRenderer;
 
     private ArcGISMap mMap;
 
@@ -52,9 +58,9 @@ public class MappingActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mMap = new ArcGISMap(Basemap.Type.OPEN_STREET_MAP, 60.09, 10.29, 14);
-        this.mapView.setMap(mMap);
-        this.mapView.setAttributionTextVisible(false);
-        startLocationProvider();
+        mapView.setMap(mMap);
+        mapView.setAttributionTextVisible(false);
+        mapView.setOnTouchListener(new CustomTouchListener(getApplicationContext(), mapView));
     }
 
     @Override
@@ -63,6 +69,8 @@ public class MappingActivity extends AppCompatActivity {
         overlayManager.addOverlaysToMap(mapView);
         ownPositionRenderer.start();
         mapController.start(mapView);
+        startGpxParser();
+        startLocationProvider();
     }
 
     @Override
@@ -84,8 +92,34 @@ public class MappingActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.mapping_activity_map_mode)
-    void switchMapMode() {
+    void switchMapMode(ImageButton button) {
         mapController.setNextMapMode();
+        switch (mapController.getMapMode()) {
+            case FOLLOW_NORTH_UP:
+                button.setRotation(0);
+                button.setImageTintList(enabled);
+                break;
+            case FOLLOW_HEAD_UP:
+                button.setRotation(45);
+                button.setImageTintList(enabled);
+                break;
+            case FREE_PAN:
+                button.setRotation(0);
+                button.setImageTintList(disabled);
+                break;
+        }
+    }
+
+    private void startGpxParser() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            String[] permissions = new String[2];
+            permissions[0] = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+            permissions[1] = Manifest.permission.READ_EXTERNAL_STORAGE;
+            ActivityCompat.requestPermissions(this, permissions, REQ_CODE_GPX);
+            return;
+        }
+        gpxRenderer.start();
     }
 
     private void startLocationProvider() {
@@ -105,6 +139,9 @@ public class MappingActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQ_CODE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             locationProvider.start();
+        }
+        if (requestCode == REQ_CODE_GPX && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            gpxRenderer.start();
         }
     }
 }

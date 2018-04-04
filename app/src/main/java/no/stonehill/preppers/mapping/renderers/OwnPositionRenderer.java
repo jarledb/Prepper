@@ -1,4 +1,4 @@
-package no.stonehill.preppers.mapping;
+package no.stonehill.preppers.mapping.renderers;
 
 import android.location.Location;
 
@@ -11,6 +11,8 @@ import com.esri.arcgisruntime.symbology.PictureMarkerSymbol;
 import no.stonehill.preppers.R;
 import no.stonehill.preppers.geo.GeoTools;
 import no.stonehill.preppers.geo.LocationProvider;
+import no.stonehill.preppers.mapping.GraphicsHelper;
+import no.stonehill.preppers.mapping.OverlayManager;
 
 public class OwnPositionRenderer {
 

@@ -5,7 +5,8 @@ import com.esri.arcgisruntime.mapping.view.MapView;
 
 public class OverlayManager {
     public enum Overlay {
-        OWN_POS;
+        OWN_POS,
+        GPX_TRACKS;
 
         private final GraphicsOverlay overlay = new GraphicsOverlay();
     }
