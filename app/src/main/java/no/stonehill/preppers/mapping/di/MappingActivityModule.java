@@ -11,6 +11,7 @@ import no.stonehill.preppers.mapping.GraphicsHelper;
 import no.stonehill.preppers.mapping.MapController;
 import no.stonehill.preppers.mapping.OverlayManager;
 import no.stonehill.preppers.mapping.renderers.GpxRenderer;
+import no.stonehill.preppers.mapping.renderers.LocationHistoryRenderer;
 import no.stonehill.preppers.mapping.renderers.OwnPositionRenderer;
 
 @Module
@@ -20,6 +21,12 @@ public class MappingActivityModule {
     @Singleton
     OwnPositionRenderer provideOwnPositionRenderer(GraphicsHelper graphicsHelper, OverlayManager overlayManager, LocationProvider locationProvider) {
         return new OwnPositionRenderer(graphicsHelper, overlayManager, locationProvider);
+    }
+
+    @Provides
+    @Singleton
+    LocationHistoryRenderer provideLocationHistoryRenderer(GraphicsHelper graphicsHelper, OverlayManager overlayManager, LocationProvider locationProvider) {
+        return new LocationHistoryRenderer(graphicsHelper, overlayManager, locationProvider);
     }
 
     @Provides

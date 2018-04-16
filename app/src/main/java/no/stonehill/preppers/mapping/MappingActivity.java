@@ -24,6 +24,7 @@ import dagger.android.AndroidInjection;
 import no.stonehill.preppers.R;
 import no.stonehill.preppers.geo.LocationProvider;
 import no.stonehill.preppers.mapping.renderers.GpxRenderer;
+import no.stonehill.preppers.mapping.renderers.LocationHistoryRenderer;
 import no.stonehill.preppers.mapping.renderers.OwnPositionRenderer;
 
 /**
@@ -39,6 +40,7 @@ public class MappingActivity extends AppCompatActivity {
     @BindColor(R.color.enabled) ColorStateList enabled;
 
     @Inject OwnPositionRenderer ownPositionRenderer;
+    @Inject LocationHistoryRenderer locationHistoryRenderer;
     @Inject GraphicsHelper graphicsHelper;
     @Inject OverlayManager overlayManager;
     @Inject LocationProvider locationProvider;
@@ -68,6 +70,7 @@ public class MappingActivity extends AppCompatActivity {
         super.onStart();
         overlayManager.addOverlaysToMap(mapView);
         ownPositionRenderer.start();
+        locationHistoryRenderer.start();
         mapController.start(mapView);
         startGpxParser();
         startLocationProvider();
@@ -89,6 +92,11 @@ public class MappingActivity extends AppCompatActivity {
     void zoomOut() {
         double mapScale = Math.min(mapView.getMapScale() * 2, 100000000);
         mapView.setViewpointScaleAsync(mapScale);
+    }
+
+    @OnClick(R.id.mapping_activity_reset)
+    void resetLocationHistory() {
+        locationHistoryRenderer.reset();
     }
 
     @OnClick(R.id.mapping_activity_map_mode)

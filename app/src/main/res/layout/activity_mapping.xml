@@ -41,4 +41,14 @@
         android:tint="@color/enabled"
         android:layout_gravity="right"/>
 
+    <Button
+        android:id="@+id/mapping_activity_reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reset"
+        android:padding="0dp"
+        android:textSize="20sp"
+        android:layout_gravity="right|bottom"
+        />
+
 </FrameLayout>

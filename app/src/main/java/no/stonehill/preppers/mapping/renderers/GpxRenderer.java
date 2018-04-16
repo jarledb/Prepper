@@ -68,7 +68,7 @@ public class GpxRenderer {
                     lineGeometry,
                     new SimpleLineSymbol(SimpleLineSymbol.Style.DASH, Color.RED, 4)
             );
-            graphic.getAttributes().put(GRAPHIC_ID, track.getName());
+
 
         } else {
             Geometry polygonGeometry = new Polygon(new PointCollection(points));
@@ -82,6 +82,8 @@ public class GpxRenderer {
                     ));
 
         }
+
+        graphic.getAttributes().put(GRAPHIC_ID, track.getName());
         overlay.getGraphics().add(graphic);
     }
 }

@@ -14,6 +14,8 @@ import no.stonehill.preppers.geo.LocationProvider;
 import no.stonehill.preppers.mapping.GraphicsHelper;
 import no.stonehill.preppers.mapping.OverlayManager;
 
+import static no.stonehill.preppers.mapping.GraphicsHelper.GRAPHIC_ID;
+
 public class OwnPositionRenderer {
 
     private final GraphicsHelper graphicsHelper;
@@ -45,6 +47,9 @@ public class OwnPositionRenderer {
             scooterSymbol.setAngleAlignment(MarkerSymbol.AngleAlignment.MAP);
 
             scooterGraphic = new Graphic(geometry, scooterSymbol);
+
+
+            scooterGraphic.getAttributes().put(GRAPHIC_ID, "ME!!!");
 
             overlay.getGraphics().add(scooterGraphic);
         } else {
